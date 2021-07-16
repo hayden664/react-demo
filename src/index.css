@@ -1,13 +1,56 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+    font-family: 'FSAlbert';
+    src: url('font/FSAlbert-Regular.otf');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.container-fluid{
+    max-width: 1200px;
+}
+
+body{
+    font-family: 'FSAlbert';
+    font-weight: 400;
+    font-size: 1rem;
+    font-style: normal;
+}
+
+.box{
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 6px 0 rgb(0 0 0 / 20%);
+    border-radius: 4px;
+    background-color: #fff;
+    height: 200px;
+    margin: 8px 0;
+    padding: 1rem;
+}
+
+.box div{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.box:hover{
+    box-shadow: 0 0 6px 0 rgb(0 0 0 / 40%);
+    transition: all ease 0.4s;
+}
+
+.logo-wrap{
+    padding-right: 0px;
+}
+
+a, a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo{
+    max-width: 72px;
+}
+
+@media only screen and (max-width: 575px) {
+    .box{
+        min-width: 293px;
+    }
 }
