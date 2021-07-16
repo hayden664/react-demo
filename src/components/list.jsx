@@ -12,6 +12,8 @@ class List extends Component {
         }
     }
 
+    // test
+
     componentDidMount(){
         fetch('https://contenthub-api.eco.astro.com.my/channel/all.json')
             //use es6 arrow function to not lose context of 'this'
