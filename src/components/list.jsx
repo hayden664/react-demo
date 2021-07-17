@@ -10,6 +10,61 @@ class List extends Component {
             items: [],
             isLoaded: false,
         }
+
+        this.ChangeCategory = this.ChangeCategory.bind(this);
+        this.btnSearch = this.btnSearch.bind(this);
+    }
+    
+    ChangeCategory(){
+        fetch('https://contenthub-api.eco.astro.com.my/channel/all.json')
+        .then(res => res.json())
+        .then(json => {
+            var category;
+            var x;
+  
+            category = json.response;
+    
+            var result = category.filter((z)=>z.category === document.getElementById("locality").value);
+
+            var items2 = [];
+            for (x in result) {
+                items2[x] = result[x];
+            }
+            
+            this.setState({
+                items: items2,
+            })
+            
+        }).catch(console.log);
+
+        document.getElementById("txtBox1").value = '';
+
+    }
+    
+    btnSearch(){    
+        fetch('https://contenthub-api.eco.astro.com.my/channel/all.json')
+        .then(res => res.json())
+        .then(json => {
+            var items;
+            var y;
+            var searchItem = [];
+
+            items = json.response;
+    
+            //filter by channel name, search the list with keyword from textbox (don't need to be exact word)
+            var result = items.filter((z)=>z.title.toUpperCase().indexOf(document.getElementById("txtBox1").value.toUpperCase()) !== -1);
+            
+            for (y in result) {
+                searchItem[y] = result[y];
+            } 
+    
+            this.setState({
+                items: searchItem,
+            })
+            
+        }).catch(console.log);
+    
+        document.getElementById("locality").selectedIndex = 0;
     }
 
     componentDidMount(){
@@ -21,11 +76,34 @@ class List extends Component {
                     isLoaded: true,
                     items: json.response,
                 })
+
+                var items = json.response;
+
+                //Populate category into dropdownlist
+                var select = document.getElementById("locality");
+                var options = [];
+                var option = document.createElement('option');
+                var i = 0;
+
+                var uniqueNames = [];
+                for(i = 0; i< items.length; i++){    
+                    if(uniqueNames.indexOf(items[i].category) === -1){
+                        uniqueNames.push(items[i].category);        
+                    }        
+                }
+
+                for(i = 0; i< uniqueNames.length; i++){    
+                    option.text = option.value = option.key = uniqueNames[i];
+                    options.push(option.outerHTML);      
+                }
+
+                select.insertAdjacentHTML('beforeEnd', options.join('\n'));
+                //Populate category into dropdownlist
             }).catch(console.log);
+            
     }
 
-
-
+    
     render() { 
 
         var { isLoaded, items } = this.state;
@@ -36,8 +114,20 @@ class List extends Component {
 
         else {
             return (
-            <div className="List">
 
+                
+            <div className="List">
+                <div>Astro Channel List</div>
+                <br></br>
+                <span>Category: </span><select key="locality" id="locality" name="locality" onChange={this.ChangeCategory}><option>--</option></select>
+                <br></br>
+                <span>Channel name: </span><input key="txtBox1" type="text" id="txtBox1" onKeyPress={event => {
+                    if (event.key === 'Enter') {
+                    this.btnSearch()
+                    }
+                }}/>&nbsp;&nbsp;&nbsp;<button id="btnClick1" onClick={this.btnSearch}>Search</button>
+                <br></br>
+                <br></br>
                 {/* <input type="text" 
                     value={this.state.search}
                     onChange={this.updateSearch.bind(this)} /> */}
@@ -72,7 +162,7 @@ class List extends Component {
                                 </a>
                             </div>
                         </div>
-                    ))};
+                    ))}
                 </div>
             </div>
             );
