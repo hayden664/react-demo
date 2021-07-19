@@ -17,54 +17,43 @@ class List extends Component {
     }
     
     ChangeCategory(){
-        fetch('https://contenthub-api.eco.astro.com.my/channel/all.json')
-        .then(res => res.json())
-        .then(json => {
-            var category;
-            var x;
-  
-            category = json.response;
+        var category;
+        var x;
+        var categoryItem = [];
+
+        category = this.state.filteredItems;
     
-            var result = category.filter((z)=>z.category === document.getElementById("locality").value);
+        var result = category.filter((z)=>z.category === document.getElementById("locality").value);
 
-            var items2 = [];
-            for (x in result) {
-                items2[x] = result[x];
-            }
+        for (x in result) {
+            categoryItem[x] = result[x];
+        }
 
-            this.setState({
-                items: items2,
-            })
+        this.setState({
+            items: categoryItem,
+        })
             
-        }).catch(console.log);
-
         document.getElementById("txtBox1").value = '';
-
     }
     
-    btnSearch(){    
-        fetch('https://contenthub-api.eco.astro.com.my/channel/all.json')
-        .then(res => res.json())
-        .then(json => {
-            var items;
-            var y;
-            var searchItem = [];
+    btnSearch(){
+        var query;
+        var y;
+        var searchItem = [];
 
-            items = json.response;
+        query = this.state.filteredItems;
     
-            //filter by channel name, search the list with keyword from textbox (don't need to be exact word)
-            var result = items.filter((z)=>z.title.toUpperCase().indexOf(document.getElementById("txtBox1").value.toUpperCase()) !== -1);
+        //filter by channel name, search the list with keyword from textbox (don't need to be exact word)
+        var result = query.filter((z)=>z.title.toUpperCase().indexOf(document.getElementById("txtBox1").value.toUpperCase()) !== -1);
             
-            for (y in result) {
-                searchItem[y] = result[y];
-            }
+        for (y in result) {
+            searchItem[y] = result[y];
+        }
     
-            this.setState({
-                items: searchItem,
-            })
+        this.setState({
+            items: searchItem,
+        })
             
-        }).catch(console.log);
-    
         document.getElementById("locality").selectedIndex = 0;
     }
 
@@ -76,10 +65,10 @@ class List extends Component {
                 this.setState({
                     isLoaded: true,
                     items: json.response,
+                    filteredItems: json.response,
                 })
 
                 var items = json.response;
-                var result = items.filter((z)=>z.category === document.getElementById("locality").value);
 
                 //Populate category into dropdownlist
                 var select = document.getElementById("locality");
@@ -131,19 +120,15 @@ class List extends Component {
 
                     <div className="col-md-6 col-sm-12 search-wrap">
                         <div className="input-group" style={{width:"250px"}}>
-                            <input key="txtBox1" type="text" id="txtBox1" className="form-control" placeholder="Channel Name" onKeyPress={event => {
+                            <input key="txtBox1" type="text" id="txtBox1" className="form-control"  placeholder="Channel Name" onKeyPress={event => {
                                 if (event.key === 'Enter') {
-                                this.btnSearch()
+                                    this.btnSearch()
                                 }
                             }}/>
                             <button id="btnClick1" className="btn" onClick={this.btnSearch}><i className="bi bi-search"></i></button>
                         </div>
                     </div>
                 </div>
-
-                {/* <input type="text" 
-                    value={this.state.search}
-                    onChange={this.updateSearch.bind(this)} /> */}
                     
                 <div className="row">
                     {items.map(item => (
