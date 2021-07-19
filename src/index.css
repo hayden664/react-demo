@@ -49,7 +49,7 @@ a, a:hover{
     max-width: 72px;
 }
 
-.search-wrap .input-group input{
+.search-wrap .input-group{
     margin-left: auto;
     border-right: none;
 }
