@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../index.css';
 import Moment from 'react-moment';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 class List extends Component {
 
@@ -30,7 +31,7 @@ class List extends Component {
             for (x in result) {
                 items2[x] = result[x];
             }
-            
+
             this.setState({
                 items: items2,
             })
@@ -56,7 +57,7 @@ class List extends Component {
             
             for (y in result) {
                 searchItem[y] = result[y];
-            } 
+            }
     
             this.setState({
                 items: searchItem,
@@ -78,6 +79,7 @@ class List extends Component {
                 })
 
                 var items = json.response;
+                var result = items.filter((z)=>z.category === document.getElementById("locality").value);
 
                 //Populate category into dropdownlist
                 var select = document.getElementById("locality");
@@ -86,7 +88,7 @@ class List extends Component {
                 var i = 0;
 
                 var uniqueNames = [];
-                for(i = 0; i< items.length; i++){    
+                for(i = 0; i< items.length; i++){
                     if(uniqueNames.indexOf(items[i].category) === -1){
                         uniqueNames.push(items[i].category);        
                     }        
@@ -116,18 +118,29 @@ class List extends Component {
             return (
 
                 
-            <div className="List">
-                <div>Astro Channel List</div>
+            <div className="list">
+                <h1 className="text-center pt-5 pb-5">Astro Channel List</h1>
                 <br></br>
-                <span>Category: </span><select key="locality" id="locality" name="locality" onChange={this.ChangeCategory}><option>--</option></select>
-                <br></br>
-                <span>Channel name: </span><input key="txtBox1" type="text" id="txtBox1" onKeyPress={event => {
-                    if (event.key === 'Enter') {
-                    this.btnSearch()
-                    }
-                }}/>&nbsp;&nbsp;&nbsp;<button id="btnClick1" onClick={this.btnSearch}>Search</button>
-                <br></br>
-                <br></br>
+                <div className="row mb-5">
+
+                    <div className="col-md-6 col-sm-12 category-wrap">
+                        <select key="locality" id="locality" className="form-control" name="locality" onChange={this.ChangeCategory} style={{padding:"5px", width:"250px"}}>
+                            <option>Select category</option>
+                        </select>
+                    </div>
+
+                    <div className="col-md-6 col-sm-12 search-wrap">
+                        <div className="input-group" style={{width:"250px"}}>
+                            <input key="txtBox1" type="text" id="txtBox1" className="form-control" placeholder="Channel Name" onKeyPress={event => {
+                                if (event.key === 'Enter') {
+                                this.btnSearch()
+                                }
+                            }}/>
+                            <button id="btnClick1" className="btn" onClick={this.btnSearch}><i className="bi bi-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+
                 {/* <input type="text" 
                     value={this.state.search}
                     onChange={this.updateSearch.bind(this)} /> */}

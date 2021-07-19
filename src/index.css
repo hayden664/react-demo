@@ -49,8 +49,31 @@ a, a:hover{
     max-width: 72px;
 }
 
+.search-wrap .input-group input{
+    margin-left: auto;
+    border-right: none;
+}
+
+.search-wrap .input-group button{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
 @media only screen and (max-width: 575px) {
     .box{
         min-width: 293px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .list .row .category-wrap .form-control{
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+    }
+    .list .row .search-wrap .input-group{
+        float: unset;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
